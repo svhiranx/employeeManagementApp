@@ -1,8 +1,6 @@
 import 'package:employeemanagement/Models/employee.dart';
-import 'package:employeemanagement/employeeHome.dart';
-import 'package:employeemanagement/employeeTab.dart';
-import 'package:employeemanagement/taskTab.dart';
-import 'package:flutter/gestures.dart';
+import 'package:employeemanagement/addEmployee.dart';
+import 'package:employeemanagement/employee_home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,14 +16,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => Employees()),
+        ChangeNotifierProvider(create: (context) => EmployeeProvider()),
       ],
-      child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.amber,
-          ),
-          home: const EmployeeHome()),
+      builder: (context, child) => MaterialApp(
+        routes: {
+          '/': (context) => const EmployeeHome(),
+          'addEmployee': (context) => AddEmployee(),
+          'editEmployee': (context) => const Placeholder()
+        },
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          useMaterial3: true,
+          primarySwatch: Colors.amber,
+        ),
+      ),
     );
   }
 }

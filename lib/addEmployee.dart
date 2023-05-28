@@ -1,9 +1,6 @@
 import 'package:employeemanagement/Models/employee.dart';
 import 'package:employeemanagement/Widgets/customTextField.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 
 class AddEmployee extends StatelessWidget {
@@ -23,7 +20,7 @@ class AddEmployee extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           backgroundColor: Colors.white,
-          title: Text(
+          title: const Text(
             'ADD EMPLOYEE',
             style: TextStyle(fontWeight: FontWeight.bold),
           )),
@@ -31,7 +28,7 @@ class AddEmployee extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               child: Form(
                 key: _form,
                 child: Wrap(
@@ -39,10 +36,10 @@ class AddEmployee extends StatelessWidget {
                   spacing: 20,
                   runSpacing: 20,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Center(
+                    const Center(
                         child: Text(
                       'Employee Details',
                       style: TextStyle(
@@ -51,23 +48,23 @@ class AddEmployee extends StatelessWidget {
                     CustomTextField(
                         fieldName: 'EMPLOYEE NAME',
                         textEditingController: nameCtrl,
-                        icon: Icon(Icons.portrait)),
+                        icon: const Icon(Icons.portrait)),
                     CustomTextField(
                         fieldName: 'PHONE NUMBER',
                         textEditingController: phoneCtrl,
-                        icon: Icon(Icons.phone)),
+                        icon: const Icon(Icons.phone)),
                     CustomTextField(
                         fieldName: 'EMAIL ID',
                         textEditingController: emailCtrl,
-                        icon: Icon(Icons.mail)),
+                        icon: const Icon(Icons.mail)),
                     CustomTextField(
                         fieldName: 'EMPLOYEE USER NAME',
                         textEditingController: userCtrl,
-                        icon: Icon(Icons.supervised_user_circle)),
+                        icon: const Icon(Icons.supervised_user_circle)),
                     CustomTextField(
                         fieldName: 'EMPLOYEE PASSWORD',
                         textEditingController: pwdCtrl,
-                        icon: Icon(Icons.lock)),
+                        icon: const Icon(Icons.lock)),
                   ],
                 ),
               ),
@@ -77,19 +74,18 @@ class AddEmployee extends StatelessWidget {
                   if (!_form.currentState!.validate()) return;
 
                   Employee employee = Employee(
-                      empMail: emailCtrl.text,
-                      empName: nameCtrl.text,
-                      empPassword: pwdCtrl.text,
-                      empPhone: phoneCtrl.text,
-                      empUserName: userCtrl.text);
-                  Provider.of<Employees>(context, listen: false)
-                      .addEmployee(employee);
-                  print(Provider.of<Employees>(context, listen: false)
+                      id: 0,
+                      name: nameCtrl.text,
+                      age: 0,
+                      salary: 0,
+                      profileImageUrl: '');
+
+                  print(Provider.of<EmployeeProvider>(context, listen: false)
                       .empList
                       .length);
                   Navigator.pop(context);
                 },
-                child: Text('ADD EMPLOYEE'))
+                child: const Text('ADD EMPLOYEE'))
           ],
         ),
       ),

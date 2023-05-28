@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:employeemanagement/Models/employee.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,43 +14,75 @@ class EmployeeCard extends StatelessWidget {
     return Card(
       child: Container(
         padding: const EdgeInsets.all(10),
-        child:
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            employee.name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Row(
-            children: [
-              IconButton(
-                  style: IconButton.styleFrom(
-                      backgroundColor: Colors.purple.shade100),
-                  onPressed: () {},
-                  icon: const Icon(Icons.edit)),
-              IconButton(
-                  style: IconButton.styleFrom(
-                      backgroundColor: Colors.red.shade300),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                              title: const Text("Are you sure?"),
-                              content: Text("${employee.name} will be deleted"),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      provider.delete(employee.id);
-                                    },
-                                    child: const Text('Yes')),
-                                TextButton(
-                                    onPressed: () {}, child: const Text('No'))
-                              ],
-                            ));
-                  },
-                  icon: const Icon(Icons.delete)),
-            ],
-          ),
-        ]),
+              Text(employee.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              Row(
+                children: [
+                  IconButton(
+                      style: IconButton.styleFrom(
+                          backgroundColor: Colors.purple.shade100),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'editEmployee',
+                            arguments: {index: index});
+                      },
+                      icon: const Icon(Icons.edit)),
+                  IconButton(
+                      style: IconButton.styleFrom(
+                          backgroundColor: Colors.red.shade300),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (dialogContext) => AlertDialog(
+                            title: const Text("Are you sure?"),
+                            content: Text("${employee.name} will be deleted"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    log(employee.id.toString());
+                                    provider
+                                        .delete(employee.id!)
+                                        .then((success) {
+                                      Navigator.pop(dialogContext);
+                                    });
+                                  },
+                                  child: const Text('Yes')),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(dialogContext);
+                                  },
+                                  child: const Text('No'))
+                            ],
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.delete)),
+                ],
+              ),
+            ]),
+            Text.rich(
+              TextSpan(children: [
+                const TextSpan(
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  text: 'Age : ',
+                ),
+                TextSpan(text: ' ${employee.age}')
+              ]),
+            ),
+            Text.rich(
+              TextSpan(children: [
+                const TextSpan(
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  text: 'Salary : ',
+                ),
+                TextSpan(text: ' ${employee.salary}')
+              ]),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:employeemanagement/Models/employee.dart';
 import 'package:employeemanagement/addEmployee.dart';
+import 'package:employeemanagement/edit_employee.dart';
 import 'package:employeemanagement/employee_home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const EmployeeHome(),
           'addEmployee': (context) => AddEmployee(),
-          'editEmployee': (context) => const Placeholder()
+          'editEmployee': (context) => EditEmployee()
         },
         title: 'Flutter Demo',
         theme: ThemeData(

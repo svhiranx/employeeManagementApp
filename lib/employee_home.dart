@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:employeemanagement/Models/employee.dart';
 import 'package:employeemanagement/Widgets/employee_card.dart';
 import 'package:employeemanagement/Widgets/error_listener.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,17 +47,20 @@ class _EmployeeHomeState extends State<EmployeeHome> {
           elevation: 0,
           title: const Text('Employee Management')),
       body: ErrorListener(
-        child: Center(
-          child: provider.isLoading
-              ? const CircularProgressIndicator()
-              : ListView.builder(
-                  itemCount: provider.empList.length,
-                  itemBuilder: (context, index) {
-                    return EmployeeCard(
-                        key: ValueKey(provider.empList[index].id),
-                        index: index);
-                  },
-                ),
+        child: RefreshIndicator(
+          onRefresh: () => provider.fetchEmployees(),
+          child: Center(
+            child: provider.isLoading
+                ? const CircularProgressIndicator()
+                : ListView.builder(
+                    itemCount: provider.empList.length,
+                    itemBuilder: (context, index) {
+                      return EmployeeCard(
+                          key: ValueKey(provider.empList[index].id),
+                          index: index);
+                    },
+                  ),
+          ),
         ),
       ),
     );

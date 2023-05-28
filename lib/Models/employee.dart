@@ -5,17 +5,17 @@ import 'package:employeemanagement/api_service.dart';
 import 'package:flutter/material.dart';
 
 class Employee {
-  int id;
+  int? id;
   String name;
   int salary;
   int age;
-  String profileImageUrl;
+  String? profileImageUrl;
   Employee(
-      {required this.id,
+      {this.id,
       required this.name,
       required this.salary,
       required this.age,
-      required this.profileImageUrl});
+      this.profileImageUrl});
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
         id: json['id'],
@@ -26,23 +26,20 @@ class Employee {
   }
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'id': id,
-      'employee_name': name,
-      'employee_salary': salary,
-      'employee_age': age,
-      'profile_image': profileImageUrl
+      'name': name,
+      'salary': salary.toString(),
+      ' age': age.toString(),
     };
   }
 }
 
 class EmployeeProvider with ChangeNotifier {
-  final List<Employee> _empList = [];
+  List<Employee> _empList = [];
 
   bool isLoading = false;
   String? error;
 
-  void fetchEmployees() async {
-    if (_empList.isNotEmpty) return;
+  Future fetchEmployees() async {
     log('fetch start');
     isLoading = true;
     notifyListeners();
@@ -50,10 +47,13 @@ class EmployeeProvider with ChangeNotifier {
     if (!response['success']) {
       error = response['error'];
       log(response['error']);
-      return;
     } else {
+      if (_empList.isNotEmpty) {
+        _empList = [];
+      }
       for (var data in (response['data'] as List)) {
-        _empList.add(
+        _empList.insert(
+          0,
           Employee.fromJson(data),
         );
       }
@@ -62,9 +62,29 @@ class EmployeeProvider with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+    return;
   }
 
-  void delete(int id) async {
+  Future<bool> create(Employee employee) async {
+    isLoading = true;
+    notifyListeners();
+    Map<String, dynamic> response =
+        await ApiService().createEmployee(employee.toJson());
+
+    if (!response['success']) {
+      error = response['error'];
+      log(response['error']);
+    } else {
+      _empList.add(employee);
+    }
+    notifyListeners();
+    isLoading = false;
+    return response['success'];
+  }
+
+  Future<bool> delete(int id) async {
+    isLoading = true;
+    notifyListeners();
     Map<String, dynamic> response = await ApiService().deleteEmployee(id);
     if (!response['success']) {
       error = response['error'];
@@ -72,7 +92,9 @@ class EmployeeProvider with ChangeNotifier {
     } else {
       _empList.removeWhere((element) => element.id == id);
     }
+    isLoading = false;
     notifyListeners();
+    return response['success'];
   }
 
   List<Employee> get empList {

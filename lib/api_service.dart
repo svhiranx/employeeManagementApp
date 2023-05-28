@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String baseUrl = 'https://dummy.restapiexample.com/api/v1/';
+  final String baseUrl = 'https://dummy.restapiexample.com/api/v1';
 
   Future<Map<String, dynamic>> getEmployees() async {
     final url = '$baseUrl/employees';
@@ -27,7 +27,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> deleteEmployee(int id) async {
     final url = '$baseUrl/delete/$id';
-    final response = await http.get(Uri.parse(url));
+    final response = await http.delete(Uri.parse(url));
     return _handleResponse(response, 'message');
   }
 
@@ -43,7 +43,7 @@ class ApiService {
     } else {
       String error = responseBody;
       if (response.statusCode == 429) {
-        error = 'Too many requests';
+        error = 'Too many requests, please try again later';
       }
       return {
         'success': false,

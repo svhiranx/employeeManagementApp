@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
 class EditableTextField extends StatefulWidget {
-  const EditableTextField({super.key, required this.title});
+  const EditableTextField(
+      {super.key,
+      required this.title,
+      required this.textEditingController,
+      required this.keyboardType});
   final String title;
+  final TextEditingController textEditingController;
+  final TextInputType keyboardType;
   @override
   State<EditableTextField> createState() => _EditableTextFieldState();
 }
@@ -10,16 +16,20 @@ class EditableTextField extends StatefulWidget {
 class _EditableTextFieldState extends State<EditableTextField> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller =
-        TextEditingController(text: "Festive Leave");
     bool _isEnable = false;
     return Row(
       children: <Widget>[
-        Container(
-          width: 100,
-          child: TextField(
-            controller: _controller,
+        Expanded(
+          child: TextFormField(
+            controller: widget.textEditingController,
             enabled: _isEnable,
+            keyboardType: widget.keyboardType,
+            validator: (value) {
+              if (value == null) {
+                return '${widget.title} must not be empty!';
+              }
+              return null;
+            },
           ),
         ),
         IconButton(

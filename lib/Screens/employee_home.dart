@@ -1,3 +1,4 @@
+
 import 'package:employeemanagement/Models/employee.dart';
 import 'package:employeemanagement/Widgets/employee_card.dart';
 import 'package:employeemanagement/Widgets/error_listener.dart';
@@ -54,8 +55,9 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                 ? const CircularProgressIndicator()
                 : ListView.builder(
                     itemCount: provider.empList.length,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (itemContext, index) {
                       return EmployeeCard(
+                          parentContext: context,
                           key: ValueKey(provider.empList[index].id),
                           index: index);
                     },

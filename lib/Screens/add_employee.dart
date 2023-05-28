@@ -1,7 +1,6 @@
 import 'package:employeemanagement/Models/employee.dart';
 import 'package:employeemanagement/Widgets/custom_textfield.dart';
-import 'package:employeemanagement/Widgets/editable_textfield.dart';
-import 'package:employeemanagement/utils.dart';
+import 'package:employeemanagement/Utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -76,13 +75,15 @@ class AddEmployee extends StatelessWidget {
                       Utils(context).startLoading();
                       Provider.of<EmployeeProvider>(context, listen: false)
                           .create(employee)
-                          .then((value) {
+                          .then((success) {
                         Utils(context).stopLoading();
-
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(value ? 'Success' : 'Failed'),
-                          backgroundColor: value ? Colors.green : Colors.red,
+                          content: Text(success ? 'Success' : 'Failed'),
+                          backgroundColor: success ? Colors.green : Colors.red,
                         ));
+                        if (success == true) {
+                          Navigator.pop(context);
+                        }
                       });
                     },
                     child: const Text('ADD EMPLOYEE'))

@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:developer';
-
-import 'package:employeemanagement/api_service.dart';
+import 'package:employeemanagement/Utils/api_service.dart';
 import 'package:flutter/material.dart';
 
 class Employee {
@@ -37,6 +35,7 @@ class EmployeeProvider with ChangeNotifier {
   List<Employee> _empList = [];
 
   bool isLoading = false;
+  bool dialogIsLoading = false;
   String? error;
 
   Future fetchEmployees() async {
@@ -75,7 +74,7 @@ class EmployeeProvider with ChangeNotifier {
       error = response['error'];
       log(response['error']);
     } else {
-      _empList.add(employee);
+      _empList.insert(0, employee);
     }
     notifyListeners();
     isLoading = false;
@@ -101,7 +100,7 @@ class EmployeeProvider with ChangeNotifier {
   }
 
   Future<bool> delete(int id) async {
-    isLoading = true;
+    dialogIsLoading = true;
     notifyListeners();
     Map<String, dynamic> response = await ApiService().deleteEmployee(id);
     if (!response['success']) {
@@ -110,7 +109,7 @@ class EmployeeProvider with ChangeNotifier {
     } else {
       _empList.removeWhere((element) => element.id == id);
     }
-    isLoading = false;
+    dialogIsLoading = false;
     notifyListeners();
     return response['success'];
   }

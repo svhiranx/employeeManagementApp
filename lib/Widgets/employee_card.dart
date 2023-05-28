@@ -1,13 +1,15 @@
 import 'dart:developer';
 
 import 'package:employeemanagement/Models/employee.dart';
-import 'package:employeemanagement/utils.dart';
+import 'package:employeemanagement/Utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EmployeeCard extends StatelessWidget {
-  const EmployeeCard({super.key, required this.index});
+  const EmployeeCard(
+      {super.key, required this.index, required this.parentContext});
   final int index;
+  final BuildContext parentContext;
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<EmployeeProvider>(context);
@@ -44,12 +46,14 @@ class EmployeeCard extends StatelessWidget {
                               TextButton(
                                   onPressed: () {
                                     Navigator.pop(dialogContext);
-
+                                    Utils(parentContext).startLoading();
                                     log(employee.id.toString());
                                     provider
                                         .delete(employee.id!)
                                         .then((success) {
-                                      ScaffoldMessenger.of(context)
+                                      Utils(parentContext).stopLoading();
+
+                                      ScaffoldMessenger.of(parentContext)
                                           .showSnackBar(SnackBar(
                                         content: Text(
                                             success ? 'Success' : 'Failed'),

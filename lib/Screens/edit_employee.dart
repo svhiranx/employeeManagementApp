@@ -1,13 +1,12 @@
 import 'package:employeemanagement/Widgets/custom_textfield.dart';
-import 'package:employeemanagement/utils.dart';
+import 'package:employeemanagement/Utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:employeemanagement/Models/employee.dart';
-import 'package:employeemanagement/Widgets/editable_textfield.dart';
 
 import 'package:provider/provider.dart';
 
 class EditEmployee extends StatefulWidget {
-  EditEmployee({super.key});
+  const EditEmployee({super.key});
 
   @override
   State<EditEmployee> createState() => _EditEmployeeState();
@@ -19,15 +18,9 @@ class _EditEmployeeState extends State<EditEmployee> {
   TextEditingController nameController = TextEditingController(),
       ageController = TextEditingController(),
       salaryController = TextEditingController();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     final int index = ModalRoute.of(context)!.settings.arguments as int;
     Employee employee =
@@ -35,6 +28,14 @@ class _EditEmployeeState extends State<EditEmployee> {
     nameController = TextEditingController(text: employee.name);
     ageController = TextEditingController(text: employee.age.toString());
     salaryController = TextEditingController(text: employee.salary.toString());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    ageController.dispose();
+    salaryController.dispose();
   }
 
   bool didChange = false;
@@ -70,7 +71,7 @@ class _EditEmployeeState extends State<EditEmployee> {
       body: Column(
         children: [
           Container(
-            margin: const EdgeInsets.all(20),
+            margin: const EdgeInsets.all(30),
             child: Form(
               key: _form,
               child: Wrap(
@@ -83,9 +84,8 @@ class _EditEmployeeState extends State<EditEmployee> {
                   ),
                   const Center(
                       child: Text(
-                    'Employee Details',
-                    style: TextStyle(
-                        color: Colors.amber, fontWeight: FontWeight.bold),
+                    'Enter Employee Details',
+                    style: TextStyle(fontSize: 20, color: Colors.purple),
                   )),
                   CustomTextFormField(
                     title: 'Name',
@@ -139,6 +139,9 @@ class _EditEmployeeState extends State<EditEmployee> {
                           content: Text(value ? 'Success' : 'Failed'),
                           backgroundColor: value ? Colors.green : Colors.red,
                         ));
+                        if (value == true) {
+                          Navigator.pop(context);
+                        }
                       });
                       FocusManager.instance.primaryFocus?.unfocus();
                     },

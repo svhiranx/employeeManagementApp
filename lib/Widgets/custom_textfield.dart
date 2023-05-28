@@ -18,7 +18,7 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: (value) => onChange(),
       decoration: InputDecoration(hintText: title),
       controller: textEditingController,
-      keyboardType: TextInputType.name,
+      keyboardType: keyboardType,
       validator: (value) {
         if (value!.trim().isEmpty) {
           return '$title must not be empty!';

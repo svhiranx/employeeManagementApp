@@ -82,6 +82,24 @@ class EmployeeProvider with ChangeNotifier {
     return response['success'];
   }
 
+  Future<bool> update(Employee employee) async {
+    isLoading = true;
+    notifyListeners();
+    Map<String, dynamic> response = await ApiService()
+        .updateEmployee(employee.id.toString(), employee.toJson());
+
+    if (!response['success']) {
+      error = response['error'];
+      log(response['error']);
+    } else {
+      int index = _empList.indexWhere((element) => employee.id == element.id);
+      _empList[index] = employee;
+    }
+    notifyListeners();
+    isLoading = false;
+    return response['success'];
+  }
+
   Future<bool> delete(int id) async {
     isLoading = true;
     notifyListeners();

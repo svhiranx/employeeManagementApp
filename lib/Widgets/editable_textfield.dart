@@ -4,9 +4,11 @@ class EditableTextField extends StatefulWidget {
   const EditableTextField(
       {super.key,
       required this.title,
+      required this.onChange,
       required this.textEditingController,
       required this.keyboardType});
   final String title;
+  final Function onChange;
   final TextEditingController textEditingController;
   final TextInputType keyboardType;
   @override
@@ -24,6 +26,7 @@ class _EditableTextFieldState extends State<EditableTextField> {
             controller: widget.textEditingController,
             enabled: _isEnable,
             keyboardType: widget.keyboardType,
+            onChanged: widget.onChange(),
             validator: (value) {
               if (value == null) {
                 return '${widget.title} must not be empty!';

@@ -45,15 +45,18 @@ class AddEmployee extends StatelessWidget {
                         )),
                         CustomTextFormField(
                             title: 'Name',
+                            onChange: () {},
                             textEditingController: nameController,
                             keyboardType: TextInputType.name),
                         CustomTextFormField(
                           title: 'Age',
+                          onChange: () {},
                           textEditingController: ageController,
                           keyboardType: TextInputType.number,
                         ),
                         CustomTextFormField(
                           title: 'Salary',
+                          onChange: () {},
                           textEditingController: salaryController,
                           keyboardType: TextInputType.number,
                         ),

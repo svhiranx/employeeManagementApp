@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:employeemanagement/Models/employee.dart';
+import 'package:employeemanagement/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,7 @@ class EmployeeCard extends StatelessWidget {
                           backgroundColor: Colors.purple.shade100),
                       onPressed: () {
                         Navigator.pushNamed(context, 'editEmployee',
-                            arguments: {index: index});
+                            arguments: index);
                       },
                       icon: const Icon(Icons.edit)),
                   IconButton(
@@ -42,11 +43,19 @@ class EmployeeCard extends StatelessWidget {
                             actions: [
                               TextButton(
                                   onPressed: () {
+                                    Navigator.pop(dialogContext);
+
                                     log(employee.id.toString());
                                     provider
                                         .delete(employee.id!)
                                         .then((success) {
-                                      Navigator.pop(dialogContext);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                            success ? 'Success' : 'Failed'),
+                                        backgroundColor:
+                                            success ? Colors.green : Colors.red,
+                                      ));
                                     });
                                   },
                                   child: const Text('Yes')),

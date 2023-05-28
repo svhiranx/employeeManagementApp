@@ -20,7 +20,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> updateEmployee(
       String id, Map<String, dynamic> data) async {
-    final url = '$baseUrl/update/';
+    final url = '$baseUrl/update/$id';
     final response = await http.put(Uri.parse(url), body: data);
     return _handleResponse(response, 'data');
   }
